@@ -64,10 +64,10 @@ print(table(dados_teste$Revenue))
 # print(resultado_svm$avaliacao)
 
 # # # Random Forest - Parece OK
-# resultado_rf <- treinar_random_forest(dados_treino, dados_teste)
-# print("Resultados Random Forest:")
-# print(resultado_rf$avaliacao)
-# print(resultado_rf$importancia)
+resultado_rf <- treinar_random_forest(dados_treino, dados_teste)
+print("Resultados Random Forest:")
+print(resultado_rf$avaliacao)
+print(resultado_rf$importancia)
 
 # # # Regressão Logística - Dados muitos desbalanceados 
 # resultado_rl <- treinar_regressao(dados_treino_balanceado, dados_teste)
