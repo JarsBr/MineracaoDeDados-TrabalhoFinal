@@ -1,17 +1,13 @@
 # Função SVM
 treinar_svm <- function(dados_treino, dados_teste) {
   library(e1071)
-  
   # Treinar o modelo SVM
-  modelo_svm <- svm(Revenue ~ ., data = dados_treino, kernel = "linear", 
+  modelo_svm <- svm(Revenue ~ ., data = dados_treino, kernel = "linear",
                     cost = 1, scale = FALSE)
-  
   # Fazer previsões
   previsoes <- predict(modelo_svm, newdata = dados_teste)
-  
   # Avaliar o desempenho
   matriz_confusao <- confusionMatrix(previsoes, dados_teste$Revenue)
-  
   # Retornar modelo e avaliação
   return(list(modelo = modelo_svm, avaliacao = matriz_confusao))
 }
@@ -19,22 +15,19 @@ treinar_svm <- function(dados_treino, dados_teste) {
 # Função Random Forest
 treinar_random_forest <- function(dados_treino, dados_teste) {
   library(randomForest)
-  
   # Treinar o modelo Random Forest
-  modelo_rf <- randomForest(Revenue ~ ., data = dados_treino, ntree = 100, 
-                            mtry = sqrt(ncol(dados_treino) - 1), importance = TRUE)
-  
+  modelo_rf <- randomForest(Revenue ~ ., data = dados_treino, ntree = 100,
+                            mtry = sqrt(ncol(dados_treino) - 1),
+                            importance = TRUE)
   # Fazer previsões
   previsoes <- predict(modelo_rf, newdata = dados_teste)
-  
   # Avaliar o desempenho
   matriz_confusao <- confusionMatrix(previsoes, dados_teste$Revenue)
-  
   # Obter as variáveis mais importantes
   importancia_variaveis <- importance(modelo_rf)
-  
   # Retornar modelo, avaliação e importância das variáveis
-  return(list(modelo = modelo_rf, avaliacao = matriz_confusao, importancia = importancia_variaveis))
+  return(list(modelo = modelo_rf, avaliacao = matriz_confusao,
+              importancia = importancia_variaveis))
 }
 
 # Função Regressão Logística
