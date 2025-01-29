@@ -32,8 +32,13 @@ preprocessar_dados <- function(dados) {
   return(list(treino = dados_treino, teste = dados_teste))
 }
 
+library(ROSE)
+
 # Carregar os dados
 dados <- read.csv("dataset/online_shoppers_intention.csv")
+
+# Converter Revenue para fator
+dados$Revenue <- as.factor(dados$Revenue)
 
 # Preprocessamento
 bases <- preprocessar_dados(dados)
@@ -46,7 +51,12 @@ if (is.null(bases$treino) || is.null(bases$teste)) {
 }
 
 # # Acessando dados de treino e teste
-dados_treino <- bases$treino
+
+# Definir um novo tamanho balanceado
+N_novo <- 2 * min(table(dados_treino$Revenue))
+
+# Aplicar oversampling nos dados de treino
+dados_treino <- ovun.sample(Revenue ~ ., data = bases$treino, method = "over", N = N_novo, seed = 42)$data
 dados_teste <- bases$teste
 
 # Confirme que os dados estão corretos
@@ -58,29 +68,29 @@ print(table(dados_teste$Revenue))
 
 # Treinando e avaliando os modelos:
 
-# # # SVM - Dados muitos desbalanceados 
+# # # SVM - Parece OK
+# print("Treinando Modelo SVM:")
 # resultado_svm <- treinar_svm(dados_treino, dados_teste)
 # print("Resultados SVM:")
 # print(resultado_svm$avaliacao)
 
 # # # Random Forest - Parece OK
-resultado_rf <- treinar_random_forest(dados_treino, dados_teste)
-print("Resultados Random Forest:")
-print(resultado_rf$avaliacao)
-print(resultado_rf$importancia)
+# print("Treinando Modelo Random Forest:")
+# resultado_rf <- treinar_random_forest(dados_treino, dados_teste)
+# print("Resultados Random Forest:")
+# print(resultado_rf$avaliacao)
+# print(resultado_rf$importancia)
 
 # # # Regressão Logística - Dados muitos desbalanceados 
-# resultado_rl <- treinar_regressao(dados_treino_balanceado, dados_teste)
+# O aviso "glm.fit: fitted probabilities numerically 0 or 1 occurred" indica separação completa nos dados, ou seja, algumas combinações de variáveis explicativas predizem perfeitamente o target (Revenue). Isso faz com que os coeficientes fiquem muito grandes e as probabilidades fiquem muito próximas de 0 ou 1, causando instabilidade no modelo de regressão logística. Sei oque fazer
+# print("Treinando Modelo Regressão Logística:")
+# resultado_rl <- treinar_regressao(dados_treino, dados_teste)
 # print("Resultados Regressão Logística:")
 # print(resultado_rl$avaliacao)
 # print(resultado_rl$coeficientes)
 
-# # # # XGBoost -- Parece nao está funcionado, talvez pq Dados muitos desbalanceados 
-# resultado_xgb <- treinar_xgboost(dados_treino, dados_teste)
-# print("Resultados XGBoost:")
-# print(resultado_xgb$avaliacao)
-
 # # # LightGBM - Parece OK
-resultado_lgb <- treinar_lightgbm(dados_treino, dados_teste)
-print("Resultados LightGBM:")
-print(resultado_lgb$avaliacao)
+# print("Treinando Modelo LightGBM:")
+# resultado_lgb <- treinar_lightgbm(dados_treino, dados_teste)
+# print("Resultados LightGBM:")
+# print(resultado_lgb$avaliacao)
