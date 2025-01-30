@@ -6,44 +6,36 @@
 # install.packages("xgboost")
 # install.packages("lightgbm")
 
-# Função de preprocessamento
 preprocessar_dados <- function(dados) {
   library(dplyr)
   library(caret)
   
-  # Codificar variáveis categóricas
   dados$Month <- factor(dados$Month)
   dados$VisitorType <- factor(dados$VisitorType)
   dados$Weekend <- as.factor(dados$Weekend)
   dados$Revenue <- as.factor(dados$Revenue)
   
-  # Escalar variáveis contínuas
   variaveis_continuas <- c("Administrative_Duration", "Informational_Duration", 
                            "ProductRelated_Duration", "BounceRates", "ExitRates")
   dados[variaveis_continuas] <- scale(dados[variaveis_continuas])
   
-  # Dividir dados em treino e teste
-  set.seed(123)  # Para resultados reprodutíveis
+  # Dividir dados
+  set.seed(0)
   indice_treino <- createDataPartition(dados$Revenue, p = 0.7, list = FALSE)
   dados_treino <- dados[indice_treino, ]
   dados_teste <- dados[-indice_treino, ]
-  
-  # Retornar conjunto de treino e teste
+
   return(list(treino = dados_treino, teste = dados_teste))
 }
 
 library(ROSE)
 
-# Carregar os dados
 dados <- read.csv("dataset/online_shoppers_intention.csv")
 
-# Converter Revenue para fator
 dados$Revenue <- as.factor(dados$Revenue)
 
-# Preprocessamento
 bases <- preprocessar_dados(dados)
 
-# Verificar se o retorno da função está correto
 if (is.null(bases$treino) || is.null(bases$teste)) {
   stop("Erro: dados de treino ou teste não retornados corretamente.")
 } else {
