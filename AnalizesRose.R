@@ -13,13 +13,13 @@ variaveis_continuas <- c("Administrative_Duration", "Informational_Duration",
                          "ProductRelated_Duration", "BounceRates", "ExitRates")
 dados[variaveis_continuas] <- scale(dados[variaveis_continuas])
 
-rose_data_balancer(data, 0)
+data_balanced <-rose_data_balancer(data, 0)
 
 # Dividir dados
 set.seed(0)
-indice_treino <- createDataPartition(data$Revenue, p = 0.7, list = FALSE)
-dados_treino <- data[indice_treino, ]
-dados_teste <- data[-indice_treino, ]
+indice_treino <- createDataPartition(data_balanced$Revenue, p = 0.7, list = FALSE)
+dados_treino <- data_balanced[indice_treino, ]
+dados_teste <- data_balanced[-indice_treino, ]
 
 # Treinando e avaliando os modelos:
 

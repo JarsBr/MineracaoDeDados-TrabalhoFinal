@@ -1,4 +1,4 @@
-rose_data_balancer <- function(data, roseSeed) {
+rose_data_balancer <- function(data) {
   if (!require(ROSE)) install.packages("ROSE", dependencies=TRUE)
   library(ROSE)
   
@@ -7,7 +7,7 @@ rose_data_balancer <- function(data, roseSeed) {
   data$VisitorType <- as.factor(data$VisitorType)
   data$Weekend <- as.factor(data$Weekend)
   
-  data_balanced <- ROSE(Revenue ~ ., data = data, seed = roseSeed)$data
+  data_balanced <- ROSE(Revenue ~ ., data = data, seed = 0)$data
   
   return(data_balanced)
 }
