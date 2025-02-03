@@ -3,6 +3,7 @@ if (!require(dplyr)) install.packages("dplyr", dependencies=TRUE)
 if (!require(caret)) install.packages("caret", dependencies=TRUE)
 
 dados <- read.csv("dataset/online_shoppers_intention.csv")
+data <- read.csv("dataset/online_shoppers_intention.csv")
 
 dados$Month <- factor(dados$Month)
 dados$VisitorType <- factor(dados$VisitorType)
