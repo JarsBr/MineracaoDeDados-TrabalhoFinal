@@ -28,8 +28,6 @@ preprocessar_dados <- function(dados) {
   return(list(treino = dados_treino, teste = dados_teste))
 }
 
-library(ROSE)
-
 dados <- read.csv("dataset/online_shoppers_intention.csv")
 
 dados$Revenue <- as.factor(dados$Revenue)

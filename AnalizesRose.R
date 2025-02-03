@@ -13,7 +13,7 @@ variaveis_continuas <- c("Administrative_Duration", "Informational_Duration",
                          "ProductRelated_Duration", "BounceRates", "ExitRates")
 dados[variaveis_continuas] <- scale(dados[variaveis_continuas])
 
-data_balanced <-rose_data_balancer(data, 0)
+data_balanced <- rose_data_balancer(dados)
 
 # Dividir dados
 set.seed(0)
