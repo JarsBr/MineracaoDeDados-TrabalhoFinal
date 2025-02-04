@@ -78,3 +78,4 @@ treinar_lightgbm <- function(dados_treino, dados_teste) {
   
   return(list(modelo = modelo_lgb, avaliacao = matriz_confusao))
 }
+
